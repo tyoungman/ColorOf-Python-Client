@@ -2,8 +2,9 @@ import requests
 
 API_KEY="<get api key from colorof>"
 API_SECRET="<get api key from colorof>"
-API_SERVER="<get api server from colorof>"
+API_SERVER="http://api.colorof.com"
 
+#Obtain an token from the server to make authenticated requests  
 def getAuthToken():
 
 	#Define Authentication request parameters and authentication token endpoint
@@ -42,7 +43,7 @@ def uploadSwatch(token):
 	url = API_SERVER + "/swatches"
 	myheaders = {'Cookie': "at="+token}
 
-	r = requests.post(url + "/format/json", PARAMS,None,headers=myheaders,allow_redirects=False)
+	r = requests.post(url + "/format/json", PARAMS,None,headers=myheaders)
 
 	print(r.url)
 	print(r.text)
@@ -66,9 +67,10 @@ def updateSwatch(token,swatch_id):
 	'link' : "http://www.amazon.com/Everyday-Feeder-Programmable-Automatic-Dispenser/dp/B001F2117I/"
 	}
 
-	url = API_SERVER + "/swatches"
+	url = API_SERVER + "/swatches/%d/format/json" % swatch_id	
+
 	myheaders = {'Cookie': "at="+token}
-	r = requests.put(url + "/format/json", PARAMS,headers=myheaders,allow_redirects=False)
+	r = requests.put(url, PARAMS,headers=myheaders)
 
 	print(r.url)
 	print(r.text)
@@ -80,7 +82,7 @@ def deleteSwatch(token,swatch_id):
 	url = API_SERVER + "/swatches/%d/format/json" % swatch_id
 
 	myheaders = {'Cookie': "at="+token}
-	r = requests.delete(url + "/format/json", PARAMS,None,headers=myheaders,allow_redirects=False)
+	r = requests.delete(url, headers=myheaders)
 
 	print(r.url)
 	print(r.text)
